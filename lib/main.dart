@@ -1,4 +1,5 @@
 import 'package:counter_bloc/bloc/counter_bloc.dart';
+import 'package:counter_bloc/cubit/counter_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,8 +18,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BlocProvider<CounterBloc>(
-        create: (_) => CounterBloc(),
+      home: BlocProvider<CounterCubit>(
+        create: (_) => CounterCubit(),
         child: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
@@ -35,8 +36,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final counterBloc = CounterBloc();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           FloatingActionButton(
             onPressed: () {
-              context.read<CounterBloc>().add(Decrement());
+              context.read<CounterCubit>().decrement();
             },
             tooltip: 'Decrement',
             child: const Icon(Icons.remove),
@@ -57,14 +56,14 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(width: 8),
           FloatingActionButton(
             onPressed: () {
-              context.read<CounterBloc>().add(Increment());
+              context.read<CounterCubit>().increment();
             },
             tooltip: 'Increment',
             child: const Icon(Icons.add),
           ),
         ],
       ),
-      body: BlocBuilder<CounterBloc, CounterState>(
+      body: BlocBuilder<CounterCubit, CounterState>(
         builder: ((context, state) {
           return Center(
             child: Column(
@@ -87,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // @override
   // void dispose() {
-  //   counterBloc.dispose();
+  //   CounterCubit.dispose();
   //   super.dispose();
   // }
 }
